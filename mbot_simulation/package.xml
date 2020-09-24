@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <name>mbot_simulation</name>
+  <version>0.0.1</version>
+  <description>
+      Monarch robot simulation bringup launch files
+  </description>
+
+  <maintainer email="olima@isr.tecnico.ulisboa.pt">Oscar Lima</maintainer>
+
+  <license>GPLv3</license>
+
+  <author email="olima@isr.tecnico.ulisboa.pt">Oscar Lima</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+ 
+</package>

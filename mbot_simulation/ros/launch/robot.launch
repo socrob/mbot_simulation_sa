@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- whether you want gazebo gui or not (saves resources if you set this to false) -->
+    <arg name="gazebo_gui" default="true" />
+
+    <!-- select your world -->
+    <arg name="world_name" default="empty.world" /> <!-- set the name of the world you want -->
+    <arg name="world_path" default="$(find mbot_simulation_environments)/worlds" /> <!-- set to "worlds" empty world -->
+
+    <!-- select start robot pose -->
+    <arg name="robot_pose_x" default="0.5" />
+    <arg name="robot_pose_y" default="0.5" />
+    <arg name="robot_pose_z" default="0.01" />
+    <arg name="robot_pose_yaw" default="0.0" />
+
+    <!-- launch robot environment -->
+    <include file="$(find mbot_simulation_environments)/launch/load_environment_example.launch" >
+        <arg name="world_name" value="$(arg world_name)" />
+        <arg name="world_path" value="$(arg world_path)" />
+        <arg name="gazebo_gui" value="$(arg gazebo_gui)" />
+    </include>
+
+    <!-- PID gains for the gazebo base plugin -->
+    <rosparam param="/gazebo_ros_control/pid_gains">
+      front_left_wheel:
+        p: 1
+        i: 0.1
+        d: 0.0
+      front_right_wheel:
+        p: 1
+        i: 0.1
+        d: 0.0
+      rear_left_wheel:
+        p: 1
+        i: 0.1
+        d: 0.001
+      rear_right_wheel:
+        p: 1
+        i: 0.1
+        d: 0.0
+    </rosparam>
+
+    <!-- run common components with real robot -->
+    <include file="$(find mbot_bringup)/ros/launch/components/real_sim_common_components.launch" />
+
+    <!-- mbot base, head and arm controllers (ROS control) -->
+    <include file="$(find mbot_gazebo_control)/ros/launch/mbot_control.launch" />
+
+    <!-- spawn mbot (in a certain position and with a default arm configuration) -->
+    <node pkg="gazebo_ros" type="spawn_model" name="mbot_spawner"
+          args="-package_to_model -urdf -model mbot -param robot_description
+          -x $(arg robot_pose_x) -y $(arg robot_pose_y) -z $(arg robot_pose_z) -Y $(arg robot_pose_yaw)
+          -J left_arm_joint0 0.7378
+          -J left_arm_joint1 1.4864
+          -J left_arm_joint2 0.3175
+          -J left_arm_joint3 0.3896
+          -J left_arm_joint4 0.5062
+          -J left_arm_joint5 0.9019
+          -J left_arm_joint6 0.5123
+          -J head_link_to_head_camera_link 1.15" />
+
+</launch>

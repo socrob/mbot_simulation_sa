@@ -1,0 +1,8 @@
+- git:
+    local-name: mbot_simulation_environments
+    uri: https://github.com/socrob/mbot_simulation_environments.git
+    version: kinetic
+- git:
+    local-name: roboticsgroup_gazebo_plugins
+    uri: https://github.com/socrob/roboticsgroup_gazebo_plugins.git
+    version: master
