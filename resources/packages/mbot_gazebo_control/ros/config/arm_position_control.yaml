@@ -1,0 +1,36 @@
+# left mbot arm position controller parameters
+
+left_arm_joint0_position_controller:
+  type: velocity_controllers/JointPositionController
+  joint: left_arm_joint0
+  pid: {p: &p_gain 500.0, i: &i_gain 0.01, d: &d_gain 5.0}
+
+left_arm_joint1_position_controller:
+  type: velocity_controllers/JointPositionController
+  joint: left_arm_joint1
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain}
+
+left_arm_joint2_position_controller:
+  type: velocity_controllers/JointPositionController
+  joint: left_arm_joint2
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain}
+
+left_arm_joint3_position_controller:
+  type: velocity_controllers/JointPositionController
+  joint: left_arm_joint3
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain}
+
+left_arm_joint4_position_controller:
+  type: velocity_controllers/JointPositionController
+  joint: left_arm_joint4
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain}
+
+left_arm_joint5_position_controller:
+  type: velocity_controllers/JointPositionController
+  joint: left_arm_joint5
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain}
+
+left_arm_joint6_position_controller:
+  type: velocity_controllers/JointPositionController
+  joint: left_arm_joint6
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain}

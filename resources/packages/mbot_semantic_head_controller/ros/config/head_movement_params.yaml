@@ -1,0 +1,9 @@
+speed:
+  slow: 10.0
+  normal: 20.0
+  fast: 50.0
+
+directions:
+  center: 90   # always keep in 90, the center of he robot head
+  left: 5      # min 0, but we give 5 to avoid head jumps (due to bad closed source board firmware)
+  right: 175   # max is 180, we give 180 to avoid head jumps (due to bad closed source board firmware)

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- NOTE : This is an example launch file, please do not modify! -->
+
+  <node ns="hri" pkg="mbot_semantic_head_controller" type="semantic_head_controller" name="semantic_head_controller_node" output="screen">
+    <rosparam command="load" file="$(find mbot_semantic_head_controller)/ros/config/head_movement_params.yaml"/>
+    <remap from="~low_level_cmd" to="/cmd_head"/>
+  </node>
+
+  <!-- initialize the controller, init parameter not working-->
+    <node pkg="rostopic" type="rostopic" name="init_head_semantic_pub" args="pub /hri/semantic_head_controller_node/cmd monarch_msgs/HeadControlSemantic &quot; {cardinal_direction: 'N', speed: 2} &quot;" output="screen"/>
+
+</launch>
+

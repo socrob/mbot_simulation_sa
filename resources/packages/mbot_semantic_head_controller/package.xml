@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <name>mbot_semantic_head_controller</name>
+  <version>0.0.1</version>
+  <description>
+      Interface to publish monarch msgs to move the head towards a cardinal direction (example: North-East)
+  </description>
+
+  <author email="guilherme.lawless@tecnico.ulisboa.pt">Guilherme Lawless</author>
+  <maintainer email="olima@isr.tecnico.ulisboa.pt">Oscar Lima</maintainer>
+  <maintainer email="guilherme.lawless@tecnico.ulisboa.pt">Guilherme Lawless</maintainer>
+
+  <license>GPLv3</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>monarch_msgs</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>monarch_msgs</run_depend>
+
+</package>

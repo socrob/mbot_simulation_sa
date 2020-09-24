@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="head_camera_auto_exposure" default="true"/>
+    <arg name="head_camera_auto_white_balance" default="true"/>
+
+    <!-- neck asus camera driver on PC1 -->
+    <!--include file="$(find openni2_launch)/launch/openni2.launch" >
+       <arg name="camera" value="neck_camera"/>
+       <arg name="publish_tf" value="false"/>
+       <arg name="device_id" value="#1" />
+    </include-->
+
+    <!-- head asus camera driver on PC1-->
+    <group>
+        <include file="$(find astra_launch)/launch/astra.launch">
+          <arg name="camera" value="head_camera"/>
+          <arg name="publish_tf" value="false"/>
+          <arg name="device_id" value="#1" />
+          <arg name="auto_exposure" value="$(arg head_camera_auto_exposure)"/>
+          <arg name="auto_white_balance" value="$(arg head_camera_auto_white_balance)"/>
+          <arg name="depth_registration" value="true" />
+
+          <!-- idmind astra calibration -->
+          <!--arg name="rgb_camera_info_url" value="file://$(find mbot_calibration)/backups/idmind_astra_rgb.yaml"/-->
+          <!--arg name="depth_camera_info_url" value="file://$(find mbot_calibration)/backups/idmind_astra_depth.yaml"/-->
+
+          <!-- socrob astra calibration -->
+          <arg name="rgb_camera_info_url" value="file://$(find mbot_calibration)/backups/socrob_astra_rgb.yaml"/>
+          <arg name="depth_camera_info_url" value="file://$(find mbot_calibration)/backups/socrob_astra_depth.yaml"/>
+        </include>
+    </group>
+
+</launch>
+

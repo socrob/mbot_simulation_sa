@@ -1,0 +1,85 @@
+#!/bin/bash
+
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+printf "${YELLOW}WARNING: you dont need to switch controllers manually anymore, simulator does it for you automatically, this feature will be removed in near future${NC}\n"
+
+# script to easily switch between mbot sim arm controllers (position, velocity and trajectory)
+# args: desired (controller) : position, velocity, trajectory
+
+function switch_to_pos_or_vel()
+{
+
+# args: 1. either position or velocity
+local other
+if [[ (($1 == 'velocity')) ]] ; then
+    other='position'
+else
+    other='velocity'
+fi
+
+# service call to switch controllers
+rosservice call /controller_manager/switch_controller "
+  start_controllers:
+  - 'left_arm_joint0_$1_controller'
+  - 'left_arm_joint1_$1_controller'
+  - 'left_arm_joint2_$1_controller'
+  - 'left_arm_joint3_$1_controller'
+  - 'left_arm_joint4_$1_controller'
+  - 'left_arm_joint5_$1_controller'
+  - 'left_arm_joint6_$1_controller'
+  stop_controllers:
+  - 'left_arm_joint0_${other}_controller'
+  - 'left_arm_joint1_${other}_controller'
+  - 'left_arm_joint2_${other}_controller'
+  - 'left_arm_joint3_${other}_controller'
+  - 'left_arm_joint4_${other}_controller'
+  - 'left_arm_joint5_${other}_controller'
+  - 'left_arm_joint6_${other}_controller'
+  - 'sim_left_arm_traj_controller'
+  strictness: 1" # strict 2, best effort 1
+}
+
+function switch_to_traj()
+{
+
+# service call to switch controllers
+rosservice call /controller_manager/switch_controller "
+  start_controllers:
+  - 'sim_left_arm_traj_controller'
+  stop_controllers:
+  - 'left_arm_joint0_position_controller'
+  - 'left_arm_joint1_position_controller'
+  - 'left_arm_joint2_position_controller'
+  - 'left_arm_joint3_position_controller'
+  - 'left_arm_joint4_position_controller'
+  - 'left_arm_joint5_position_controller'
+  - 'left_arm_joint6_position_controller'
+  - 'left_arm_joint0_velocity_controller'
+  - 'left_arm_joint1_velocity_controller'
+  - 'left_arm_joint2_velocity_controller'
+  - 'left_arm_joint3_velocity_controller'
+  - 'left_arm_joint4_velocity_controller'
+  - 'left_arm_joint5_velocity_controller'
+  - 'left_arm_joint6_velocity_controller'
+  strictness: 1" # strict 2, best effort 1
+}
+
+if (( $# != 1 )) ; then
+    echo "Usage: ${0} desired_controller"
+    exit 1
+fi
+
+if [[ (( $1 == 'trajectory' )) ]] ; then
+    echo $1
+    echo "Switching to trajectory controller"
+    switch_to_traj
+elif [[ (( $1 == 'velocity' || $1 == 'position' )) ]] ; then
+    echo "Switching to ${1} controller"
+    switch_to_pos_or_vel $1
+else
+    # warn the user about the fact that he tried to pull from x but he is currently in branch y, therefore doing nothing
+    RED='\033[0;31m'
+    NC='\033[0m' # No Color
+    printf "${RED}ERROR : option not supported, possible args are: position, velocity and trajectory${NC}\n"
+fi

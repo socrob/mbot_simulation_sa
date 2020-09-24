@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- load values from shell environment variables (check your bashrc and make sure ROBOT env is set) -->
+    <arg name="robot" default="mbot05-sim" />
+
+    <!-- upload robot description urdf to ROS parameter server (based on ROBOT env) -->
+    <include file="$(find mbot_description)/launch/upload_mbot_urdf.launch" />
+
+    <!-- robot_state_publisher, publish tf based on /joint_states topic -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" required="false" />
+
+    <!-- allow cmd_vel_constant to listen to base vel commands and latch them for some time -->
+    <node pkg="mbot_bringup" type="cmd_vel_republisher_node" name="cmd_vel_republisher" />
+
+    <!-- twist multiplexer to prioritize the use of /cmd_vel, give high prio to joypad, low prio to move_base -->
+    <include file="$(find mbot_twist_mux)/ros/launch/twist_mux.launch" />
+
+    <!-- semantic head controller, rotate robot head -->
+    <include file="$(find mbot_semantic_head_controller)/ros/launch/semantic_head_controller_example.launch" />
+
+    <!-- Combine laser scanner data into a single topic -->
+    <include file="$(find mbot_bringup)/ros/launch/components/scan_unifier.launch" />
+
+</launch>

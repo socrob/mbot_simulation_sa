@@ -1,0 +1,6 @@
+# left arm gripper controller params
+
+left_arm_gripper_joint_position_controller:
+  type: velocity_controllers/JointPositionController
+  joint: left_arm_gripper_joint
+  pid: {p: 500.0, i: 0.01, d: 5.0}

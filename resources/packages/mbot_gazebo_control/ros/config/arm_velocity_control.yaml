@@ -1,0 +1,36 @@
+# left mbot arm velocity controller params
+
+left_arm_joint0_velocity_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: left_arm_joint0
+  pid: {p: &p_gain 50000.0, i: &i_gain 0.01, d: &d_gain 5.0, i_clamp: &i_clamp 0.0}
+
+left_arm_joint1_velocity_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: left_arm_joint1
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain, i_clamp: *i_clamp}
+
+left_arm_joint2_velocity_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: left_arm_joint2
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain, i_clamp: *i_clamp}
+
+left_arm_joint3_velocity_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: left_arm_joint3
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain, i_clamp: *i_clamp}
+
+left_arm_joint4_velocity_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: left_arm_joint4
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain, i_clamp: *i_clamp}
+
+left_arm_joint5_velocity_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: left_arm_joint5
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain, i_clamp: *i_clamp}
+
+left_arm_joint6_velocity_controller:
+  type: velocity_controllers/JointVelocityController
+  joint: left_arm_joint6
+  pid: {p: *p_gain, i: *i_gain, d: *d_gain, i_clamp: *i_clamp}

@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+import mbot_gazebo_control_ros.automated_controller_switch
+
+if __name__ == '__main__':
+    mbot_gazebo_control_ros.automated_controller_switch.main()

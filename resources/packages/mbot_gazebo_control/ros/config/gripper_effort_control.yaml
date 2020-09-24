@@ -1,0 +1,6 @@
+# left arm gripper controller params
+
+left_arm_gripper_joint_effort_controller:
+  type: effort_controllers/JointEffortController
+  joint: left_arm_gripper_joint
+  pid: {p: 10.0, i: 0.01, d: 0.5}

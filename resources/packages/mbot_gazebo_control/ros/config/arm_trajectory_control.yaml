@@ -1,0 +1,50 @@
+# left mbot arm trajectory controller params
+
+# joint (actionlib) trajectory controller
+# check http://wiki.ros.org/joint_trajectory_controller
+sim_left_arm_traj_controller:
+    type: velocity_controllers/JointTrajectoryController
+    joints:
+      - left_arm_joint0
+      - left_arm_joint1
+      - left_arm_joint2
+      - left_arm_joint3
+      - left_arm_joint4
+      - left_arm_joint5
+      - left_arm_joint6
+
+    gains: # Required because we're controlling an velocity interface
+      left_arm_joint0: {p: &kp_default 100,  d: &kd_default 0.1, i: &ki_default 0.0, i_clamp: &ki_clamp_default 1} # & defines 1 time only
+      left_arm_joint1: {p: *kp_default,  d: *kd_default, i: *ki_default, i_clamp: *ki_clamp_default} # * uses previously defined in &
+      left_arm_joint2: {p: *kp_default,  d: *kd_default, i: *ki_default, i_clamp: *ki_clamp_default} # confused? check: http://yaml.org/spec/current.html#id2502311
+      left_arm_joint3: {p: *kp_default,  d: *kd_default, i: *ki_default, i_clamp: *ki_clamp_default}
+      left_arm_joint4: {p: *kp_default,  d: *kd_default, i: *ki_default, i_clamp: *ki_clamp_default}
+      left_arm_joint5: {p: *kp_default,  d: *kd_default, i: *ki_default, i_clamp: *ki_clamp_default}
+      left_arm_joint6: {p: *kp_default,  d: *kd_default, i: *ki_default, i_clamp: *ki_clamp_default}
+
+    constraints:
+      goal_time: 4.0
+      stopped_velocity_tolerance: 1.0
+      left_arm_joint0:
+        goal: &goal_pos_constraint 0.5
+        trajectory: &trajectory_pos_constraint 1.0
+      left_arm_joint1:
+        goal: *goal_pos_constraint
+        trajectory: *trajectory_pos_constraint
+      left_arm_joint2:
+        goal: *goal_pos_constraint
+        trajectory: *trajectory_pos_constraint
+      left_arm_joint3:
+        goal: *goal_pos_constraint
+        trajectory: *trajectory_pos_constraint
+      left_arm_joint4:
+        goal: *goal_pos_constraint
+        trajectory: *trajectory_pos_constraint
+      left_arm_joint5:
+        goal: *goal_pos_constraint
+        trajectory: *trajectory_pos_constraint
+      left_arm_joint6:
+        goal: *goal_pos_constraint
+        trajectory: *trajectory_pos_constraint
+
+    stop_trajectory_duration: 1.0

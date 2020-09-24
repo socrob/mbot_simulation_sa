@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+import mbot_bringup_ros.cmd_vel_republisher
+
+if __name__ == '__main__':
+    mbot_bringup_ros.cmd_vel_republisher.main()

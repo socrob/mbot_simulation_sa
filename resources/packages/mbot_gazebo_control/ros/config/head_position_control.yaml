@@ -1,0 +1,15 @@
+# mbot head position controller params for neck pan movement
+# and head camera tilt angle
+
+# neck position controller
+head_position_controller:
+  type: effort_controllers/JointPositionController
+  joint: base_link_to_head_link_joint
+  pid: {p: 50.0, i: 0.01, d: 5.0}
+
+# head tilt camera position controller
+head_camera_position_controller:
+  type: effort_controllers/JointPositionController
+  joint: head_link_to_head_camera_link
+  pid: {p: 0.5, i: 0.01, d: 0.01}
+

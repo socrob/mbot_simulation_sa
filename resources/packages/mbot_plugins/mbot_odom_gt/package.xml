@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package>
+    <name>mbot_odom_gt</name>
+    <version>1.0.0</version>
+    <description>
+        Combination of https://github.com/pal-robotics-graveyard/reemc_standalone/blob/master/overlay/atlas_msgs/gazebo_ros_p3d.cpp
+        and https://github.com/ros-simulation/gazebo_ros_pkgs/blob/kinetic-devel/gazebo_plugins/src/gazebo_ros_p3d.cpp
+        to publish odom ground truth both as nav_msgs/Odometry and tf
+        See also: https://answers.ros.org/question/222033/how-do-i-publish-gazebo-position-of-a-robot-model-on-odometry-topic/
+    </description>
+
+    <maintainer email="olima@isr.tecnico.ulisboa.pt">Oscar Lima</maintainer>
+
+    <license>GPLv3</license>
+
+    <author email="olima@isr.tecnico.uliboa.pt">Oscar Lima</author>
+
+    <!-- build dependencies -->
+    <buildtool_depend>catkin</buildtool_depend>
+    <build_depend>gazebo_ros</build_depend>
+    <build_depend>roscpp</build_depend>
+    <build_depend>std_msgs</build_depend>
+    <build_depend>tf</build_depend>
+
+    <!-- run dependencies -->
+    <run_depend>gazebo_ros</run_depend>
+    <run_depend>roscpp</run_depend>
+    <run_depend>std_msgs</run_depend>
+    <run_depend>tf</run_depend>
+
+    <export>
+        <gazebo plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
+    </export>
+
+</package>
