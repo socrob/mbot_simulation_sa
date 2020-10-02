@@ -51,13 +51,6 @@
     <node pkg="gazebo_ros" type="spawn_model" name="mbot_spawner"
           args="-package_to_model -urdf -model mbot -param robot_description
           -x $(arg robot_pose_x) -y $(arg robot_pose_y) -z $(arg robot_pose_z) -Y $(arg robot_pose_yaw)
-          -J left_arm_joint0 0.7378
-          -J left_arm_joint1 1.4864
-          -J left_arm_joint2 0.3175
-          -J left_arm_joint3 0.3896
-          -J left_arm_joint4 0.5062
-          -J left_arm_joint5 0.9019
-          -J left_arm_joint6 0.5123
           -J head_link_to_head_camera_link 1.15" />
 
 </launch>

@@ -14,7 +14,7 @@
     <node pkg="mbot_bringup" type="cmd_vel_republisher_node" name="cmd_vel_republisher" />
 
     <!-- twist multiplexer to prioritize the use of /cmd_vel, give high prio to joypad, low prio to move_base -->
-    <include file="$(find mbot_twist_mux)/ros/launch/twist_mux.launch" />
+    <!--include file="$(find mbot_twist_mux)/ros/launch/twist_mux.launch" /-->
 
     <!-- semantic head controller, rotate robot head -->
     <include file="$(find mbot_semantic_head_controller)/ros/launch/semantic_head_controller_example.launch" />

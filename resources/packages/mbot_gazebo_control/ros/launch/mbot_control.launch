@@ -10,7 +10,7 @@
 
   <!-- identify from ROBOT env if arm is required -->
   <!-- <arg name="arm_required" value="$(eval robot!='mbot05')"/> -->
-  <arg name="arm_required" value="false"/>
+  <arg name="arm_required" value="true"/>
 
   <!-- the location of the control parameters -->
   <arg name="ctrl_config_base_path" default="$(find mbot_gazebo_control)/ros/config" />
@@ -25,45 +25,6 @@
                               head_camera_position_controller
                               joint_state_controller" />
 
-  <!-- arm is required -->
-  <group if="$(arg arm_required)" >
-
-    <!-- load gripper controller (position control, 1 joint) -->
-    <rosparam file="$(arg ctrl_config_base_path)/gripper_position_control.yaml" command="load" />
-    <node pkg="controller_manager" type="spawner" name="gripper_ctrl_spawner"
-          output="screen" args="left_arm_gripper_joint_position_controller" />
-
-    <!-- upload left arm position controller params to param server -->
-    <rosparam file="$(arg ctrl_config_base_path)/arm_position_control.yaml" command="load" />
-    <!-- load (but do not start) left arm position controller -->
-    <node pkg="controller_manager" type="spawner" name="pos_arm_ctrl_spawner"
-          output="screen" args="--stopped left_arm_joint0_position_controller
-                              left_arm_joint1_position_controller
-                              left_arm_joint2_position_controller
-                              left_arm_joint3_position_controller
-                              left_arm_joint4_position_controller
-                              left_arm_joint5_position_controller
-                              left_arm_joint6_position_controller" />
-
-    <!-- upload left arm velocity controller params to param server -->
-    <rosparam file="$(arg ctrl_config_base_path)/arm_velocity_control.yaml" command="load" />
-    <!-- load (but do not start) left arm velocity controller -->
-    <node pkg="controller_manager" type="spawner" name="vel_arm_ctrl_spawner"
-          output="screen" args="--stopped left_arm_joint0_velocity_controller
-                              left_arm_joint1_velocity_controller
-                              left_arm_joint2_velocity_controller
-                              left_arm_joint3_velocity_controller
-                              left_arm_joint4_velocity_controller
-                              left_arm_joint5_velocity_controller
-                              left_arm_joint6_velocity_controller" />
-
-    <!-- upload left arm trajectory controller params to param server -->
-    <rosparam file="$(arg ctrl_config_base_path)/arm_trajectory_control.yaml" command="load" />
-    <!-- load and start left arm trajectory controller -->
-    <node pkg="controller_manager" type="spawner" name="traj_arm_ctrl_spawner"
-          output="screen" args="sim_left_arm_traj_controller" />
-
-  </group> <!-- closes if arm required tag -->
 
   <!-- 1. subscribe to cmd_head std_msgs/UInt8MultiArray (with position/velocity info)
           and republish to gazebo command topic on the form std_msgs/Float64 (position only) -->
