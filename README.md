@@ -23,6 +23,9 @@ Clone and compile the code into your catkin workspace:
         cd ~/{your_workspace}/src
         git clone https://github.com/socrob/mbot_simulation_sa.git
         cd mbot_simulation_sa
+        
+If you are using another ROS distribution other than Kinetic, please edit line 9 of **repository.debs** for your distro (*DISTRO=[your_distro]*). This might not work as the code was developed and tested using ROS Kinetic. Then you can proceed:
+
         ./repository.debs
         catkin build
         source ~/.bashrc
