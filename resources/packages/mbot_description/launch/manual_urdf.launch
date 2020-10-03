@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="file" default="mbot_with_left_ist_arm_calibrated.urdf"/>
+
+  <param name="robot_description" textfile="$(find mbot_description)/urdf/$(arg file)"/>
+
+</launch>

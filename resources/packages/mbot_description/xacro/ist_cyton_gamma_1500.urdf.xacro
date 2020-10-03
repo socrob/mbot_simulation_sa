@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="cyton_gamma_1500">
+  <xacro:include filename="$(find cyton_gamma_1500_description)/ist_cyton_gamma_1500_macros.urdf.xacro" />
+
+  <xacro:base_footprint prefix="left_arm_" />
+  <xacro:cyton_gamma_1500 prefix="left_arm_" virtual_ee="true" />
+</robot>

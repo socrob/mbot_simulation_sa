@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="mbot_body" >
+
+  <!-- robot properties -->
+  <xacro:property name="mbot_body_mass" value="40.0" />
+  <xacro:property name="mbot_head_mass" value="10.0" />
+  <xacro:property name="head_offset" value="0.05" /> <!-- distance on x direction between the robot center and the head rotation center -->
+  <xacro:property name="head_height" value="0.765" /> <!-- vertical distance between floor and the base of the head (head_link) -->
+  <xacro:property name="shell_height" value="0.025" /> <!-- distance between the floor and the shell -->
+  <xacro:property name="lasers_height" value="0.1335" /> <!-- vertical distance from the floor to the lasers -->
+  <xacro:property name="center_to_front_laser_distance" value="0.2785" /> <!-- distance on x direction from the center of the robot to the laser -->
+  <xacro:property name="center_to_rear_laser_distance" value="0.2795" /> <!-- to do - calibrate back laser(mounted on the shell) -->
+  <xacro:property name="small_inertial_value" value="0.1" /> <!-- we dont know yet the moment of inertia of the robot! -->
+
+  <!-- wheel properties -->
+  <xacro:property name="wheel_mass" value="2.3" />
+  <xacro:property name="wheel_radius" value="0.05" />
+  <xacro:property name="wheel_width" value="0.05" />
+  <xacro:property name="wheel_long_offset" value="0.175" /> <!-- distance from robot center to wheel center in x direction (forward direction) -->
+  <xacro:property name="wheel_lat_offset" value="0.14429" /> <!-- distance from robot center to wheel center in y direction (lateral direction) -->
+
+  <!-- mesh locations --> 
+  <xacro:property name="mbot_body_mesh" value="package://mbot_description/meshes/body/mbot_body.dae" />
+  <xacro:property name="mbot_head_mesh" value="package://mbot_description/meshes/head/mbot_head.dae" />
+  <xacro:property name="hokuyo_mesh" value="package://mbot_description/meshes/sensors/hokuyo.dae" />
+
+  <!-- IMU properties -->
+  <xacro:property name="imu_height" value="0.2" />
+  <xacro:property name="dummy_inertia" value="1e-09"/>
+  
+  <!-- math definitions -->
+  <xacro:property name="M_PI" value="3.141592653589793" />
+
+  <!-- import wheel macro -->
+  <xacro:include filename="$(find mbot_description)/xacro/mbot_wheels.urdf.xacro" />
+
+  <!-- mbot body (shell) -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 ${shell_height}" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="${mbot_body_mesh}"/>
+      </geometry>
+      <material name="black" />
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.23" length="${head_height - 0.25}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0.05 0 0.4"/>
+    </collision>
+    <inertial>
+      <mass value="60"/>
+      <origin rpy="0 0 0" xyz="0.05 0 0.4"/>
+      <inertia ixx="24.3379902648" ixy="0.0" ixz="0.0" iyy="24.3379902648" iyz="0.0" izz="43.2"/>
+    </inertial>
+  </link>
+
+  <!-- mbot IMU -->
+  <link name="imu_link">
+    <inertial>
+      <mass value="1.001"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="${dummy_inertia}" ixy="0.0" ixz="0.0" iyy="${dummy_inertia}" iyz="0.0" izz="${dummy_inertia}"/>
+    </inertial>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="imu_link" />
+    <origin xyz="0 0 ${imu_height}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- mbot wheel generation based on imported macro -->
+  <xacro:wheel prefix="front" side="left" origin_x="-${wheel_long_offset}" origin_y="${wheel_lat_offset}" >
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:wheel>
+
+  <xacro:wheel prefix="front" side="right" origin_x="${wheel_long_offset}" origin_y="${wheel_lat_offset}" >
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:wheel>
+
+  <xacro:wheel prefix="rear" side="left" origin_x="-${wheel_long_offset}" origin_y="-${wheel_lat_offset}" >
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:wheel>
+
+  <xacro:wheel prefix="rear" side="right" origin_x="${wheel_long_offset}" origin_y="-${wheel_lat_offset}" >
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:wheel>
+
+  <!-- mbot head -->
+  <link name="head_link">
+    <visual>
+      <geometry>
+        <mesh filename="${mbot_head_mesh}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <!-- use a box for collision instead of the mesh for simplicity -->
+    <collision>
+      <geometry>
+        <box size="0.35 0.45 0.25"/> <!-- approximate size of the mbot head bounding box -->
+      </geometry>
+      <origin rpy="0 0 0" xyz="0.025 0 0.15"/>
+    </collision>
+    <inertial>
+      <mass value="2"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.000604" ixy="0" ixz="0" iyy="0.00111" iyz="0" izz="0.000914"/>
+    </inertial>
+  </link>
+
+  <!-- mbot head projected to the ground for perception purposes -->
+  <link name="head_link_projected" />
+
+  <!-- laser range finders -->
+  <link name="base_laser_front_link">
+    <visual>
+      <geometry>
+        <mesh filename="${hokuyo_mesh}"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="${small_inertial_value}" ixy="0" ixz="0"
+               iyy="${small_inertial_value}" iyz="0" izz="${small_inertial_value}"/>
+    </inertial>
+  </link>
+
+  <link name="base_laser_rear_link">
+    <visual>
+      <geometry>
+        <mesh filename="${hokuyo_mesh}"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="${small_inertial_value}" ixy="0" ixz="0"
+               iyy="${small_inertial_value}" iyz="0" izz="${small_inertial_value}"/>
+    </inertial>
+  </link>
+
+  <link name="base_footprint"/>
+
+  <!-- base_footprint (at the same level as the laser scanners -->
+  <joint name="base_link_to_base_footprint_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_footprint"/>
+    <origin xyz="0 0 ${lasers_height}" rpy="0 0 0" />
+  </joint>
+
+  <joint name="base_link_to_laser_front_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_laser_front_link"/>
+    <origin xyz="${center_to_front_laser_distance} 0 ${lasers_height}" rpy="0 0 -0.05" />
+  </joint>
+
+  <joint name="base_link_to_laser_back_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_laser_rear_link"/>
+    <origin xyz="${-center_to_rear_laser_distance} 0 ${lasers_height}" rpy="${M_PI} 0 ${M_PI+ 0.02}" />
+  </joint>
+
+  <joint name="base_link_to_head_link_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="head_link"/>
+    <limit effort="100.0" lower="${-M_PI/2}" upper="${M_PI/2}" velocity="1.0"/>
+    <axis xyz="0 0 -1.0"/>
+    <origin xyz="${head_offset} 0 ${head_height}" rpy="0 0 0" />
+  </joint>
+
+  <joint name="head_link_to_head_link_projected_joint" type="fixed">
+    <parent link="head_link"/>
+    <child link="head_link_projected"/>
+    <origin xyz="0 0 ${-head_height}" rpy="0 0 0" />
+  </joint>
+
+  <transmission name="head_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="base_link_to_head_link_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="head_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- Bring in simulation data for Gazebo. -->
+  <xacro:include filename="$(find mbot_description)/gazebo/mbot_gazebo.urdf.xacro" />
+
+</robot>

@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+  <!-- file taken from: https://github.com/tu-darmstadt-ros-pkg/hector_models, adapted-->
+
+  <xacro:property name="M_PI" value="3.1415926535897931"/>
+  <xacro:property name="ASUS_WIDTH" value="0.035"/>
+  <xacro:property name="ASUS_LENGTH" value="0.185"/>
+  <xacro:property name="ASUS_HEIGHT" value="0.025"/>
+  <xacro:property name="ASUS_BASE_TO_SERVO_AXIS_DISTANCE" value="0.008"/>
+  <xacro:property name="RGB_OFFSET" value="0.022"/> <!-- offset between camera center and RGB lens -->
+  <xacro:property name="INFRARED_SENSOR_OFFSET" value="0.049"/> <!-- offset between camera center and infrared sensor lens -->
+
+  <!--
+    The asus_camera_model macro only adds the model, it does not also add
+    the openni gazebo plugin. See the 'asus_camera' macro below for that
+  -->
+  <xacro:macro name="asus_camera_model" params="name calib_x calib_y calib_z calib_roll calib_pitch calib_yaw">
+
+    <link name="${name}_model_link">
+      <inertial>
+        <mass value="0.200"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="5.8083e-4" ixy="0" ixz="0" iyy="3.0833e-5" iyz="0" izz="5.9083e-4"/>
+      </inertial>
+      <visual>
+        <origin xyz="${ASUS_WIDTH / 2.0} 0 ${ASUS_HEIGHT / 2.0 + ASUS_BASE_TO_SERVO_AXIS_DISTANCE}" rpy="0 0 0"/>
+        <geometry>
+          <!--box size="0.035 0.185 0.025"/-->
+          <mesh filename="package://mbot_description/meshes/sensors/asus_camera_simple.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${ASUS_WIDTH} ${ASUS_LENGTH} ${ASUS_HEIGHT}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${name}_link"/>
+
+    <joint name="model_to_${name}_link" type="fixed">
+      <origin xyz="${ASUS_WIDTH / 2.0 + calib_x} ${calib_y} ${ASUS_HEIGHT / 2.0 + ASUS_BASE_TO_SERVO_AXIS_DISTANCE + calib_z}"
+              rpy="${calib_roll} ${calib_pitch} ${calib_yaw}"/>
+      <parent link="${name}_model_link"/>
+      <child link="${name}_link"/>
+    </joint>
+
+    <joint name="${name}_depth_joint" type="fixed">
+      <origin xyz="0.0 ${INFRARED_SENSOR_OFFSET} 0.0" rpy="0 0 0"/>
+      <parent link="${name}_link"/>
+      <child link="${name}_depth_frame"/>
+    </joint>
+
+    <link name="${name}_depth_frame"/>
+
+    <joint name="${name}_depth_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-M_PI/2} 0.0 ${-M_PI/2}"/>
+      <parent link="${name}_depth_frame"/>
+      <child link="${name}_depth_optical_frame"/>
+    </joint>
+
+    <link name="${name}_depth_optical_frame"/>
+
+    <joint name="${name}_rgb_joint" type="fixed">
+      <origin xyz="0.0 ${RGB_OFFSET} 0.0" rpy="0 0 0"/>
+      <parent link="${name}_link"/>
+      <child link="${name}_rgb_frame"/>
+    </joint>
+
+    <link name="${name}_rgb_frame"/>
+
+    <joint name="${name}_rgb_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-M_PI/2} 0.0 ${-M_PI/2}"/>
+      <parent link="${name}_rgb_frame"/>
+      <child link="${name}_rgb_optical_frame"/>
+    </joint>
+
+    <link name="${name}_rgb_optical_frame"/>
+  </xacro:macro>
+
+  <!-- ASUS depth camera -->
+  <xacro:macro name="asus_camera" params="name calib_x calib_y calib_z calib_roll calib_pitch calib_yaw" >
+  <xacro:asus_camera_model name="${name}" calib_x="${calib_x}" calib_y="${calib_y}" calib_z="${calib_z}" calib_roll="${calib_roll}" calib_pitch="${calib_pitch}" calib_yaw="${calib_yaw}"/>
+
+  <!-- ASUS Xtion PRO camera for simulation -->
+  <gazebo reference="${name}_depth_frame">
+    <sensor type="depth" name="${name}">
+      <always_on>true</always_on>
+      <update_rate>20.0</update_rate>
+      <camera>
+      <horizontal_fov>${60.0 * M_PI/180.0}</horizontal_fov>
+      <image>
+          <format>B8G8R8</format>
+          <width>640</width>
+          <height>480</height>
+      </image>
+      <clip>
+          <near>0.05</near>
+          <far>8.0</far>
+      </clip>
+      </camera>
+      <plugin name="${name}_camera_controller" filename="libgazebo_ros_openni_kinect.so">
+        <cameraName>${name}</cameraName>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>10</updateRate>
+        <imageTopicName>rgb/image_raw</imageTopicName>
+        <depthImageTopicName>depth/image_raw</depthImageTopicName>
+        <pointCloudTopicName>depth_registered/points</pointCloudTopicName>
+        <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>
+        <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+        <frameName>${name}_depth_optical_frame</frameName>
+        <baseline>0.1</baseline>
+        <distortion_k1>0.0</distortion_k1>
+        <distortion_k2>0.0</distortion_k2>
+        <distortion_k3>0.0</distortion_k3>
+        <distortion_t1>0.0</distortion_t1>
+        <distortion_t2>0.0</distortion_t2>
+        <pointCloudCutoff>0.4</pointCloudCutoff>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  </xacro:macro>
+
+</robot>

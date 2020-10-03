@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="mbot" >
+
+  <!-- import xacro macros to assemble a robot -->
+
+  <!-- cyton gamma 1500 arm -->
+  <xacro:include filename="$(find cyton_gamma_1500_description)/xacro/ist_cyton_gamma_1500_macros.urdf.xacro" />
+  <xacro:cyton_gamma_1500 prefix="left_arm_" />
+
+  <!-- monarch robot body -->
+  <xacro:include filename="$(find mbot_description)/xacro/mbot_body_with_cameras.urdf.xacro" />
+
+  <!-- robot properties -->
+  <!--xacro:property name="left_arm_base_link_height" value="0.632" /--> <!-- the height of arm_base_link w.r.t base_link in z direction -->
+  <xacro:property name="left_arm_base_link_height" value="0.6265" />
+  <xacro:property name="left_arm_base_link_x_offset" value="0.059" /> <!-- the offset between base link and arm_base_link in x direction -->
+  <xacro:property name="left_arm_base_link_y_offset" value="0.1060" /> <!-- the offset between base link and arm_base_link in y direction -->
+  <xacro:property name="arm_pitch_angle" value="2.092253" /> <!-- the angle at which the arm is mounted on the robot -->
+  <xacro:property name="arm_yaw_angle" value="0.05" /> <!-- -0.5 to facilitate grasping objects -->
+  
+  <!-- math definitions -->
+  <xacro:property name="M_PI" value="3.141592653589793" />
+  
+  <!-- connect mbot body with the arm -->  
+  <joint name="base_link_to_left_arm" type="fixed">
+    <parent link="base_link"/>
+    <child link="left_arm_base_link"/>
+    <origin rpy="${-M_PI/2} ${arm_pitch_angle} ${arm_yaw_angle}" xyz="${left_arm_base_link_x_offset} ${left_arm_base_link_y_offset} ${left_arm_base_link_height}"/>
+  </joint>
+
+</robot>

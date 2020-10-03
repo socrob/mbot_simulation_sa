@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="mbot_body" >
+  
+  <!-- wheel macro -->
+  <xacro:macro name="wheel" params="prefix side origin_x origin_y *joint_pose">
+    <!-- dummy link from which the real wheel will rotate from -->
+    <link name="${prefix}_${side}_static">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia
+          ixx="0.0288" ixy="2.20484e-6" ixz="-1.3145e-5"
+          iyy="0.4324" iyz="1.8944e-3"
+          izz="0.4130"/>
+      </inertial>
+    </link>
+    
+    <!-- to specify the position of the dummy link w.r.t. base link -->
+    <joint name="${prefix}_${side}_static_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${prefix}_${side}_static" />
+      <origin xyz="${origin_x} ${origin_y} ${wheel_radius}" rpy="0 0 0" />
+    </joint>
+    
+    <!-- each wheel -->
+    <link name="${prefix}_${side}_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="${M_PI/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <material name="black" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${M_PI/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="40"/>
+        <inertia ixx="0.03333332" ixy="0.0" ixz="0.0" iyy="0.03333332" iyz="0.0" izz="0.05"/>
+      </inertial>
+    </link>
+    
+    <!-- wheel joints -->
+    <joint name="${prefix}_${side}_wheel" type="continuous">
+      <parent link="${prefix}_${side}_static"/>
+      <child link="${prefix}_${side}_wheel_link" />
+      <xacro:insert_block name="joint_pose" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <!-- to be able to rotate the wheels with a special plugin -->
+    <transmission name="${prefix}_wheel_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_${side}_wheel">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}_${side}_actuator">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+  </xacro:macro>
+
+</robot>

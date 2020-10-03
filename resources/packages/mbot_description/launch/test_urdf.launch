@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Test a URDF file -->
+
+  <!-- upload robot description urdf to ROS parameter server (based on ROBOT env) -->
+  <include file="$(find mbot_description)/launch/upload_mbot_urdf.launch" />
+
+  <!-- publish joint state values from gui scrollbar interface for testing purposes -->
+  <param name="use_gui" value="True"/>
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+
+  <!-- subscribe to joint states and publish robot tf -->
+  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" />
+
+  <!-- run rviz with custom config suitable to see the robot model -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find mbot_description)/config/test_urdf.rviz" />
+
+</launch>

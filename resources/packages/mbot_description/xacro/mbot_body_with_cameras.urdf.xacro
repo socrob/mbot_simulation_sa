@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="mbot" >
+
+  <!-- import xacro files -->
+  <xacro:include filename="$(find mbot_description)/xacro/mbot_body.urdf.xacro" />
+  <xacro:include filename="$(find mbot_description)/xacro/sensors/asus_camera.urdf.xacro" />
+  <xacro:include filename="$(find mbot_description)/xacro/sensors/astra_camera.urdf.xacro" />
+
+  <!-- instantiate imported macros with specific values, i.e. camera calibration -->
+  <xacro:asus_camera name="neck_camera" calib_x="0.03" calib_y="0.0" calib_z="0.02" calib_roll="-0.07" calib_pitch="0.0" calib_yaw="0.065" />
+  <xacro:astra_camera name="head_camera" calib_x="0.0" calib_y="0.0" calib_z="0.0" calib_roll="0.0" calib_pitch="0.0" calib_yaw="0.0" />
+
+  <!-- math definitions -->
+  <xacro:property name="M_PI" value="3.141592653589793" />
+
+  <!-- connect neck 3D camera with the head -->
+  <joint name="neck_link_to_head_camera" type="fixed" >
+    <parent link="head_link" />
+    <child link="neck_camera_model_link" />
+    <origin xyz="0.12 0 0.05" rpy="0 0.8 0" />
+  </joint>
+
+  <!-- head camera (can tilt) -->
+
+  <joint name="head_link_to_head_camera_link" type="revolute">
+    <parent link="head_link" />
+    <child link="head_camera_model_link" />
+    <limit effort="1" lower="-0.1" upper="2.1" velocity="${(M_PI/3.0)/0.2}" />
+    <axis xyz="0 -1.0 0" />
+    <origin xyz="0.21 0.0 0.25" rpy="0.0 1.57 0.0" />
+  </joint>
+
+  <transmission name="head_camera_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="head_link_to_head_camera_link">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardwareInterface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+</robot>

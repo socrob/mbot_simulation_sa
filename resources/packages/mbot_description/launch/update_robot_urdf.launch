@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Upload URDF file to parameter server and run robot state publisher -->
+  <!-- This launch file is useful for robot / camera calibration (to not restart bringup) -->
+
+  <!-- upload robot description urdf to ROS parameter server (based on ROBOT env) -->
+  <include file="$(find mbot_description)/launch/upload_mbot_urdf.launch" />
+
+  <!-- running a new robot state publisher will kill the old one runned by bringup -->
+  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" />
+
+</launch>
