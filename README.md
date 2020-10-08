@@ -29,6 +29,12 @@ If you are using another ROS distribution other than Kinetic, please edit line 9
         ./repository.debs
         catkin build
         source ~/.bashrc
+        
+Recompile the package bellow using the following commands:
+
+        roscd mbot_description 
+        catkin build --this --make-args install
+
 
 Launch the robot in an empty world:
 
