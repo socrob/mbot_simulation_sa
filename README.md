@@ -24,7 +24,7 @@ Clone and compile the code into your catkin workspace:
         git clone https://github.com/socrob/mbot_simulation_sa.git
         cd mbot_simulation_sa
         
-If you are using another ROS distribution other than Kinetic, please edit line 9 of **repository.debs** for your distro (*DISTRO=[your_distro]*). This might not work as the code was developed and tested using ROS Kinetic. Then you can proceed:
+In the master branch the code is adapted to ROS Kinetic. There is another branch *melodic* with the same code for ROS Melodic and a branch *melodic-robocup* that does not publish ground truth position. If you are using another ROS distribution other than Kinetic or Melodic, please edit line 9 of **repository.debs** for your distro (*DISTRO=[your_distro]*). This might not work as the code was developed and tested using the above mentioned distributions. Then you can proceed:
 
         ./repository.debs
         catkin build
