@@ -6,7 +6,7 @@ else
 fi
 
 # your ROS distribution
-DISTRO=kinetic
+DISTRO=melodic
 
 # create list of packages to install
 packagelist=(
@@ -31,6 +31,7 @@ packagelist=(
     ros-${DISTRO}-move-base
     ros-${DISTRO}-controller-manager
     ros-${DISTRO}-controller-manager-msgs
+    ros-${DISTRO}-ridgeback-gazebo-plugins
 )
 
 ### Install debian packages listed in array above

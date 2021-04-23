@@ -19,18 +19,6 @@
       <y_velocity_p_gain>100000.0</y_velocity_p_gain>
     </plugin>
 
-    <!-- publish perfect odometry as ground truth taken from gazebo/models/pose -->
-    <plugin name="p3d_base_controller" filename="libmbot_gazebo_ros_p3d.so">
-      <alwaysOn>true</alwaysOn>
-      <updateRate>50.0</updateRate>
-      <bodyName>base_link</bodyName>
-      <topicName>odom_gt</topicName>
-      <gaussianNoise>0.0</gaussianNoise> <!-- 0.01 if you want to add noise-->
-      <frameName>world</frameName> <!-- gazebo frame! not robot frame -->
-      <xyzOffsets>0 0 0</xyzOffsets>
-      <rpyOffsets>0 0 0</rpyOffsets>
-    </plugin>
-
     <!-- IMU simulation plugin config -->
     <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
       <updateRate>50.0</updateRate>
