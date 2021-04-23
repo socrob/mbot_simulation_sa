@@ -32,6 +32,9 @@ packagelist=(
     ros-${DISTRO}-controller-manager
     ros-${DISTRO}-controller-manager-msgs
     ros-${DISTRO}-ridgeback-gazebo-plugins
+    ros-${DISTRO}-serial
+    ros-${DISTRO}-rqt
+#    python-catkin-tools
 )
 
 ### Install debian packages listed in array above

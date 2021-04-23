@@ -7,4 +7,8 @@ catkin_package(
   CATKIN_DEPENDS
 )
 
+install(DIRECTORY ros
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
 catkin_python_setup()

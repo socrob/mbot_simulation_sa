@@ -17,6 +17,13 @@ catkin_package(CATKIN_DEPENDS
   monarch_msgs
 )
 
+install(DIRECTORY ros
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+install(DIRECTORY common
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
 ### EXECUTABLES
 add_executable(semantic_head_controller ros/src/semantic_head_controller_server.cpp)
 target_link_libraries(semantic_head_controller ${catkin_LIBRARIES})

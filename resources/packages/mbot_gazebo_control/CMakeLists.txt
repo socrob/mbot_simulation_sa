@@ -18,6 +18,11 @@ catkin_package(CATKIN_DEPENDS
     std_msgs
 )
 
+install(DIRECTORY ros
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+
 ### EXECUTABLES
 add_executable(mbot_head_republisher ros/src/mbot_head_gazebo_republisher.cpp)
 target_link_libraries(mbot_head_republisher ${catkin_LIBRARIES})

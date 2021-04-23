@@ -1,8 +1,1 @@
-- git:
-    local-name: mbot_simulation_environments
-    uri: https://github.com/socrob/mbot_simulation_environments.git
-    version: melodic
-- git:
-    local-name: cob_driver
-    uri: https://github.com/socrob/cob_driver.git
-    version: only_scan_unifier
+

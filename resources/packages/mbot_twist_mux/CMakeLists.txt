@@ -5,12 +5,17 @@ find_package(catkin REQUIRED)
 
 catkin_package()
 
-install(DIRECTORY ros/launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/ros/launch
+#install(DIRECTORY ros/launch/
+#  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/ros/launch
+#)
+#install(DIRECTORY ros/config/
+#  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/ros/config
+#)
+
+install(DIRECTORY ros
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
-install(DIRECTORY ros/config/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/ros/config
-)
+
 
 ### TESTS
 if(CATKIN_ENABLE_TESTING)

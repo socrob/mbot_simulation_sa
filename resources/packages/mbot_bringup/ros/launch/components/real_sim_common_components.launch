@@ -8,7 +8,7 @@
     <include file="$(find mbot_description)/launch/upload_mbot_urdf.launch" />
 
     <!-- robot_state_publisher, publish tf based on /joint_states topic -->
-    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" required="false" />
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher_2" output="screen" required="false" />
 
     <!-- allow cmd_vel_constant to listen to base vel commands and latch them for some time -->
     <node pkg="mbot_bringup" type="cmd_vel_republisher_node" name="cmd_vel_republisher" />

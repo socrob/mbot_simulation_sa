@@ -18,3 +18,6 @@ catkin_package(
     CATKIN_DEPENDS message_runtime std_msgs
 )
 
+install(DIRECTORY msg
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

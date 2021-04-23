@@ -1,28 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-  <!-- upload robot description URDF to ROS parameter server (based on ROBOT env) -->
-
-  <!-- load values from shell environment variables (check your bashrc and make sure ROBOT env is set) -->
-  <arg name="robot" default="$(optenv ROBOT !!ROBOT env NOT SET!!)" />
-
-  <!-- identify from ROBOT env if arm is required -->
-  <!-- if ROBOT env is different than mbot05 then set arm_required variable to true  -->
-  <arg name="arm_required" value="$(eval robot!='mbot05')"/>
-
- <!-- upload mbot URDF model to parameter server -->
-  <!-- upload URDF model with arm -->
-  <group if="$(arg arm_required)">
-    <!-- upload URDF model of the robot to parameter server -->
-    <param name="robot_description"
-           command="$(find xacro)/xacro --inorder $(find mbot_description)/xacro/mbot_with_left_ist_arm.urdf.xacro" />
-  </group>
-
-  <!-- upload URDF model without arm -->
-  <group unless="$(arg arm_required)">
-    <!-- upload URDF model of the robot to parameter server -->
-    <param name="robot_description"
+  <param name="robot_description"
            command="$(find xacro)/xacro --inorder $(find mbot_description)/xacro/mbot_body_with_cameras.urdf.xacro" />
-  </group>
+
 
 </launch>
