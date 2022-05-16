@@ -15,6 +15,7 @@ packagelist=(
     ros-${DISTRO}-hector-gazebo
     ros-${DISTRO}-hector-gazebo-plugins
     ros-${DISTRO}-joint-state-controller
+    ros-${DISTRO}-effort-controllers
     ros-${DISTRO}-kdl-parser
     ros-${DISTRO}-robot-state-publisher
     ros-${DISTRO}-ros-control
