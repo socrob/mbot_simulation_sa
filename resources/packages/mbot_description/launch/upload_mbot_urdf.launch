@@ -8,7 +8,7 @@
 
   <!-- identify from ROBOT env if arm is required -->
   <!-- if ROBOT env is different than mbot05 then set arm_required variable to true  -->
-  <arg name="arm_required" value="$(eval robot!='mbot05')"/>
+  <arg name="arm_required" value="false"/>
 
  <!-- upload mbot URDF model to parameter server -->
   <!-- upload URDF model with arm -->
